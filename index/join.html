@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEEE RAS BAU - Join Us </title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="sty.css"> <style>
+        /* الحاوية الأساسية لتوسيط عناصر الانضمام عمودياً مع إبعادها عن الهيدر */
+        .join-page-wrapper {
+            display: flex;
+            flex-direction: column; /* لترتيب العناصر عمودياً فوق بعضها */
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh; /* يعطي مساحة ممتازة وراحة للعين */
+            padding: 120px 20px 60px 20px; /* تم زيادة الـ padding العلوي لـ 120px لمنع التداخل مع الهيدر */
+            position: relative;
+            z-index: 5;
+        }
+
+        /* ========================================== */
+        /* شارة الحالة الطائرة بالأعلى (منفصلة تماماً) */
+        /* ========================================== */
+        .status-badge-floating {
+            display: inline-flex;
+            align-items: center;
+            gap: 40px;
+            background: rgba(95, 7, 26, 0.93); /* نفس نمط الكرت الزجاجي الداكن */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 12px 26px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 30, 86, 0.2); /*غيريها للأخضر*/
+            margin-top: 20px; /* هامش علوي إضافي لتنزيلها تحت الهيدر */
+            margin-bottom: 25px; /* المسافة الفاصلة بين الشارة والكرت الرئيسي */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 51, 51, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        /* الدائرة المضيئة باللون الأحمر النبضي */
+        .status-indicator-red {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: relative;
+            background-color: #ff3333;
+            box-shadow: 0 0 12px #ff3333;
+        }
+
+        /* حلقة النبض الخارجي المتكرر */
+        .status-indicator-red::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: rgba(255, 51, 51, 0.5);
+            animation: pulse-glow-red 1.8s infinite ease-in-out;
+        }
+
+        .status-text-red {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ff5e5e; /* لون أحمر ناعم متناسق */
+            letter-spacing: 0.5px;
+        }
+
+        /* ========================================== */
+        /* كرت الانضمام الزجاجي الرئيسي              */
+        /* ========================================== */
+        .join-container {
+            background: rgba(44, 3, 53, 0.796);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 30, 86, 0.15);
+            border-radius: 30px;
+            width: 100%;
+            max-width: 550px;
+            padding: 45px 35px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
+                        inset 0 0 20px rgba(255, 255, 255, 0.02);
+            transition: all 0.4s ease;
+        }
+
+        .join-container:hover {
+            border-color: rgba(255, 30, 86, 0.3);
+            box-shadow: 0 25px 55px rgba(132, 0, 50, 0.2);
+            transform: translateY(-5px); /* ارتفاع ناعم وبسيط للكرت عند التمرير */
+        }
+
+        .logo-text {
+            font-size: 34px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(255, 30, 86, 0.577);
+        }
+
+        .sub-logo {
+            font-size: 13px;
+            color: #ff1e56;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .join-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        .join-desc {
+            font-size: 15px;
+            color: #b5aeb6;
+            line-height: 1.7;
+            margin-bottom: 35px;
+        }
+
+        /* ========================================== */
+        /* زر التسجيل المغلق المعطل                   */
+        /* ========================================== */
+        .join-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 16px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.35);
+            cursor: not-allowed; /* يغير شكل المؤشر لعلامة المنع */
+            pointer-events: none; /* يمنع أي نقرات على الزر تماماً */
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        /* حركة النبض الدائري للدائرة الحمراء */
+        @keyframes pulse-glow-red {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2.4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="geometric-bg"></div>
+    <div class="tech-bg-shapes">
+        <i class="fas fa-robot tech-shape shape-robot-1"></i>
+        <i class="fas fa-robot tech-shape shape-robot-2"></i>
+        <i class="fas fa-cogs tech-shape shape-cog-2"></i>
+        <i class="fas fa-robot tech-shape shape-robot-1"></i>
+        <i class="fas fa-laptop-code tech-shape shape-computer"></i> 
+        <i class="fas fa-bolt tech-shape shape-bolt"></i>             
+        <i class="fas fa-microchip tech-shape shape-microchip"></i>   
+        <i class="fas fa-globe tech-shape shape-globe"></i>           
+        <i class="fas fa-trophy tech-shape shape-trophy"></i>         
+        <i class="fas fa-users tech-shape shape-users"></i>          
+    </div>
+
+    <header>
+        <div class="logo">
+            <img src="images.webp" alt="IEEE RAS Logo" class="logo-img">
+        </div>
+        <nav>
+            <a href="index.html">الرئيسية</a>
+            <a href="workshops.html">ورشات العمل</a>
+            <a href="courses.html">الكورسات</a>
+            <a href="projects.html">المشاريع</a>
+            <a href="join.html" class="active-nav">انضم إلينا</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="join-page-wrapper reveal">
+            
+            <div class="status-badge-floating">
+                <span class="status-indicator-red"></span>
+                <span class="status-text-red">عذراً، التسجيل مغلق حالياً.</span>
+            </div>
+
+            <div class="join-container">
+                <h1 class="logo-text">IEEE RAS BAU</h1>
+                <div class="sub-logo">Robotics & Automation Society</div>
+
+                <h2 class="join-title">بوابة الانضمام للفريق</h2>
+                <p class="join-desc">
+                    هل أنت شغوف بالروبوتات، البرمجة، التصميم الميكانيكي، أو صناعة المحتوى البصري؟ ابدأ رحلتك التكنولوجية المتميزة معنا وساهم في بناء المستقبل اليوم.
+                </p>
+
+                <button class="join-btn" disabled>
+                    <span>التسجيل مغلق مؤقتاً</span>
+                    <i class="fas fa-user-slash"></i>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="site-footer reveal">
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>IEEE RAS BAU</h3>
+                <p>IEEE Robotics and Automation Society BAU</p>
+                <p>مجموعة رائدة تسعى لتمكين العقول الشابة في مجالات الروبوتات بجامعة البلقاء التطبيقية - كلية الهندسة التكنولوجية.</p>
+            </div>
+            <div class="footer-links">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="workshops.html">ورشات العمل</a></li>
+                    <li><a href="courses.html">الكورسات</a></li>
+                    <li><a href="projects.html">المشاريع</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h4>تابعنا على</h4>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/share/1HL7fDVgAT/" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.linkedin.com/company/ieee-bau-robotics-and-automation-chapter/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/ieeerasbau?igsh=cW93amEybjhoZ2tj" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 جميع الحقوق محفوظة لـ IEEE RAS BAU - FET.</p>
+        </div>
+    </footer>
+
+    <script src="java.js"></script> </body>
+</html>
